@@ -1,0 +1,58 @@
+[project]
+name = "tcs-assignment"
+version = "0.1.0"
+description = "Theory of complex systems assignment (2025)"
+readme = "README.md"
+authors = [
+    { name = "Henry Zwart", email = "henrybzwart@gmail.com" },
+]
+
+requires-python = ">=3.13"
+dependencies = [
+    "matplotlib>=3.10.1",
+    "numpy>=2.2.4",
+    "scipy>=1.15.2",
+    "seaborn>=0.13.2",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.pyright]
+venvPath = "."
+venv = ".venv"
+
+[tool.ruff.lint]
+select = [
+    # pydocstyle
+    "D", # comment to ignore docstring checks
+    # pycodestyle
+    "E",
+    # Pyflakes
+    "F",
+    # pyupgrade
+    "UP",
+    # flake8-bugbear
+    "B",
+    # flake8-simplify
+    "SIM",
+    # isort
+    "I",
+]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.lint.per-file-ignores]
+
+[dependency-groups]
+dev = [
+    "hypothesis>=6.131.0",
+    "mypy>=1.15.0",
+    "pytest>=8.3.5",
+]
+# Ignore incorrect docstrings in the CLI
+#"src/tcs-assignment/cli/*" = ["D"]
+#"tests/*" = ["D"]
+
