@@ -4,7 +4,7 @@ PORT ?= 23625
 EXPORT_NAME ?= solutions.pdf
 COMPILE_ARGS ?= --root "$$(pwd)" $(EXPORT_NAME)
 
-NEURON_MODELLING_RESULTS = results/neuron_modelling.json results/figures/neuron_interspiking_distribution.pdf
+NEURON_MODELLING_RESULTS = results/neuron_modelling.json results/figures/neuron_interspiking_distribution.svg
 REPORT_DEPENDENCIES = report/main.typ report/solutions.typ $(NEURON_MODELLING_RESULTS)
 
 .PHONY: clean preview
@@ -32,4 +32,4 @@ results:
 	mkdir $@
 
 clean:
-	rm -rf $(EXPORT_NAME)
+	rm -rf $(EXPORT_NAME) results

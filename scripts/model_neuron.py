@@ -85,11 +85,11 @@ def main():
     # Plot inter-spike durations
     fig, ax = plt.subplots(figsize=(4, 2), layout="constrained")
     plot_distribution_between_spikes(interspike_times, ax=ax)
-    fig.savefig(Path("results/figures/neuron_interspiking_distribution.pdf"))
+    fig.savefig(Path("results/figures/neuron_interspiking_distribution.svg"))
 
     # Calculate refractory period
     tau_0 = determine_refractory(interspike_times)
-    results["tau0"] = tau_0
+    results["tau0"] = np.round(tau_0, decimals=4)
 
     # Save results
     with Path("results/neuron_modelling.json").open("w") as f:

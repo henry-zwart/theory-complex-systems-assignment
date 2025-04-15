@@ -5,8 +5,14 @@
 
 = Modelling the activity of a single neuron
 
+#let neuron_results = json("../results/neuron_modelling.json")
+
 + Can you plot the distribution $P(tau)$ of the time intervals $tau$ between successive spikes? Check that there is indeed a rafactory period, i.e., a time interval $tau_0$ after each spike, during which the neuron doesn't spike again. What is the duration $tau_0$ for this time interval?
-  #solution[]
+  #solution[
+  #figure(image("../results/figures/neuron_interspiking_distribution.svg"))
+
+  Refractory period duration $tau_0 = #neuron_results.tau0 m s$ calculated as the minimum observed duration between neuron spikes.
+  ]
 
 + Can you check that the decay of the distribution $P(tau)$ of inter-spike intervals is indeed exponential? Measure the corresponding decay rate $lambda$
   #solution[]
