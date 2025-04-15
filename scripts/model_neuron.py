@@ -1,11 +1,13 @@
-from pathlib import Path
-import json
+"""Experiment code for Q1. Modelling the activity of a single neuron."""
 
-from matplotlib.axes import Axes
+import json
+from pathlib import Path
+
 import matplotlib.pyplot as plt
-import seaborn as sns
 import numpy as np
 import numpy.typing as npt
+import seaborn as sns
+from matplotlib.axes import Axes
 
 from tcs_assignment import configure_mpl
 

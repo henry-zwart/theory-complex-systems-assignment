@@ -1,7 +1,10 @@
+"""Plotting configuration and reusable visualisation functions."""
+
 from pathlib import Path
+
 import matplotlib.pyplot as plt
-from matplotlib import font_manager
 import seaborn as sns
+from matplotlib import font_manager
 
 
 def configure_mpl():
