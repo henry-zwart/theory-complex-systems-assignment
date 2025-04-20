@@ -27,7 +27,7 @@ venv = ".venv"
 [tool.ruff.lint]
 select = [
     # pydocstyle
-    "D", # comment to ignore docstring checks
+    #"D", # comment to ignore docstring checks
     # pycodestyle
     "E",
     # Pyflakes

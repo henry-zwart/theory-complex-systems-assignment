@@ -17,6 +17,7 @@
   course: course,
   authors: authors,
   font: "New Computer Modern",
+  margin_size: 2cm,
 )
 
 // Display main content (solutions)
