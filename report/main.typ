@@ -17,6 +17,7 @@
   course: course,
   authors: authors,
   font: "New Computer Modern",
+  fontsize: 9pt,
   margin_size: 2cm,
 )
 

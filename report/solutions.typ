@@ -305,24 +305,163 @@
 
 + Can you show that the most general expression of $p_bold(s)$ with maximal entropy that satisfying the constraints in Eq. (2) is Eq. (1)? Give the relation between $lambda_0$ and the partition function $Z$. How are the parameters $alpha_i$ or $eta_(i j)$ related to the parameters $h_i$ and $J_(i j)$?
   #solution[
-  Derivation on phone. "Subject to the constraints being satisfied, the Boltzmann gives the maximum entropy. Since Temperature absorbed into the terms, and the constraint satisfaction is independent of the lagrange multipliers, the multipliers change the maximum entropy available (at this temperature), but the distribution with max entropy at that temperature is always Boltzmann."
+  The constrained optimisation problem described by $U$ is optimised iff, for all microstates $bold(s)$ and spins $i, j$, $ (diff U)/(diff p_s) = (diff U)/(diff lambda_0) = (diff U)/(diff alpha_i) = (diff U)/(diff eta_(i j)) = 0 $
+  Note that the partial derivatives with respect to the constraints are zero exactly when those constraints are satisfied. The partial derivative with respect to $p_s$ is zero for a particular $bold(s)$ when
+  $
+  0 &= -log(p_s) - 1 + lambda_0 + sum_(i=1)^n alpha_i s_i (bold(s)) + sum_("pair"(i,j)) eta_(i j) s_i (bold(s)) s_j (bold(s)) \
+  p_s &= exp(-(1 - lambda_0) + sum_(i=1)^n alpha_i s_i (bold(s)) + sum_("pair"(i,j)) eta_(i j) s_i (bold(s)) s_j (bold(s))) \
+  &= 1/exp(1 - lambda_0) exp(sum_(i=1)^n alpha_i s_i (bold(s)) + sum_("pair"(i,j)) eta_(i j) s_i (bold(s)) s_j (bold(s)))
+  $
+
+  Comparing this expression to Eq. (1), we obtain the following equalities:
+  $
+  Z &= exp(1 - lambda_0) wide&& \
+  h_i &= alpha_i wide &&"for each spin" i \
+  J_(i j) &= eta_(i j) wide &&"for each pair of spins" i,j
+  $
   ]
 
 == Statistical inference: model with no couplings
 
-+
-  #solution[]
-+
-  #solution[]
-+
-  #solution[]
+Consider the model with no couplings (all the $J_(i j) = 0$):
+$
+p_bold(g) (bold(s)) = 1/(Z(bold(g))) exp(sum_(i=1)^n h_i s_i)
+$
+The vector $bold(g) = (h_1, ..., h_n)$ now only contains $n$ local field parameters.
+
++ Can you show that in that case the model is assuming the variables are independent from each other, i.e., that we can write the joint probability distribution as a product of a probability distribution over each variable $p_bold(g) (bold(s)) = product_(i=1)^n p_(bold(h_i)) (s_i)$? What is the probability distribution $p_(bold(h_i)) (s_i)$ for the spin variable $s_i$?
+  #solution[
+  We first solve for the partition function in the described model. Using the normalisation condition, we have:
+  $
+  Z(bold(g)) &= sum_(microstate(s)) exp(sum_(i=1)^n h_i s_i) \
+  &= sum_(s_1 in plus.minus 1) dots.c sum_(s_(n-1) in plus.minus 1) exp(sum_(i=1)^(n-1) h_i s_i) lr((exp(h_n) + exp(-h_n))) \
+  &= product_(i=1)^n exp(h_i) + exp(-h_i) \
+  &= product_(i=1)^n 2cosh(h_i)
+  $
+
+  We can then rewrite $p_bold(g) (bold(s))$ as:
+  $
+  p_bold(g) (bold(s)) &= 1/(Z(bold(g))) exp(sum_(i=1)^n h_i s_i) \
+  &= 1/(Z(bold(g))) product_(i=1)^n exp(h_i s_i) \
+  &= product_(i=1)^n exp(h_i s_i)/(2cosh(h_i)) 
+  $
+
+  Where we recognise the term inside the product as the probability distribution for a system consisting of a single spin. It follows that $1/(2cosh(h_i))$ normalises the distribution for a single spin, and thus we find $p_bold(g) (bold(s)) = inline(product_(i=1)^n) p_bold(h_i) (s_i)$, where:
+
+  $
+  p_bold(h_i) (s_i) = exp(h_i s_i)/(2cosh(h_i))
+  $
+  ]
+
++ Take one of the spin variables $s_i$. We recall that $angle.l s_i angle.r_D$ is the average value of $s_i$ in the data (given a dataset, this quantity is a constant), and that $angle.l s_i angle.r = sum_bold(s) p(bold(s)) s_i$ is the model average of $s_i$. Can you show that the value of the parameter $h_i$ that satisfies the constraint $angle.l s_i angle.r = angle.l s_i angle.r_D$ is:
+  $
+  h_i = tanh^(-1) (angle.l s_i angle.r_D),
+  $
+  where $tanh^(-1) (x)$ denotes the inverse of the hyperbolic tangent? In particular, in that case the probability distribution over $s_i$ in the model is exactly equal to the empirical distribution of $s_i$.
+  #solution[
+  Let $i$ be a spin in a model with $n$ spins, and $angle.l s_i angle.r_D$ the average value of $s_i$ in a dataset $D$. Suppose that $angle.l s_i angle.r = angle.l s_i angle.r_D$ in the model, then from the definition of $angle.l s_i angle.r$
+  $
+  angle.l s_i angle.r = sum_(microstate(s)) s_i (microstate(s)) dot p_bold(g) (microstate(s)) = angle.l s_i angle.r_D
+  $ <eq:2-4-2-definition>
+  From the previous exercise, we have that $p_bold(g) (microstate(s)) = inline(product_(j=1)^n) p_bold(h_j) (s_j)$. Taking $hat(bold(s))_i = (s_1, ..., s_(i-1), s_(i+1), ..., s_n)$ to denote the vector of spin variables excluding $s_i$, we use this result to rewrite @eq:2-4-2-definition in terms of $p_bold(h_i)$:
+  $
+  angle.l s_i angle.r_D &= sum_(microstate(s)) s_i (microstate(s)) dot p_bold(h_i) (s_i (microstate(s))) dot product_(j != i) p_bold(h_j) (s_j (microstate(s))) \
+  &= sum_(s in plus.minus 1) s p_bold(h_i) (s) dot overbrace(sum_(hat(bold(s))_(-i)) product_(j != i) p_bold(h_j (s_j (hat(bold(s))_(-i)))), = 1) \
+  &= p_bold(h_i) (1) - p_bold(h_i) (-1) \
+  &= (exp(h_i) - exp(-h_i))/(2cosh(h_i)) \
+  &= sinh(h_i)/cosh(h_i) \
+  &= tanh(h_i)
+  $
+
+  In the second line of reasoning we group the original summation terms by their $s_i$ component. The inner summation is then the sum over the probabilities of observing any other microstate for the remaining $n-1$ variables. The normalisation condition of probability distributions implies that this is equal to 1.
+
+  Finally, we obtain the desired result, $h_i = tanh^(-1)(angle.l s_i angle.r_D)$. 
+  ]
+
++ In Eq. (6), we observe that:
+  - If $angle.l s_i angle.r_D > 0$, then the inferred $h_i$ is also positive;
+  - Reciprocally, $angle.l s_i angle.r_D < 0$, then the inferred $h_i$ is also negative.
+  How does this connect with the tendency of the $i$'th judge to vote on average more liberal or more conservative? Is this result coherent with the general comments that we did in Question Q1.4.?
+  #solution[
+  This result is coherent with our comments in Question Q1.4, in which we interpreted the sign of $h_i$ as reflecting the sign of $i$'s political leaning ($-1$ for liberal, $+1$ for conservative). As $angle.l s_i angle.r_D$ is the average value of $s_i$ in a dataset $D$, a positive value occurs when $i$ votes conservative in more than 50% of cases. Likewise, a negative value occurs when $i$ votes liberal in more than 50% of cases. 
+
+  As in Q1.4, if the $i$'th judge has an equal number of liberal and conservative votes in $D$, then $angle.l s_i angle.r_D = h_i = 0$. 
+
+  While in Q1.4 our discussion was concerned with a model which included interactions, the comments are still relevant here, as we interpreted the sign of $h_i$ to reflect political leaning in absence of interactions with other judges. In this model we simply make this assumption explicit by taking $J_(i j) = 0$.
+  ]
 
 == Statistical inference: maximising the log-likelihood function
 
-+
-  #solution[]
-+
-  #solution[]
+*Introducing the likelihood function.* Looking more closely at Eq. (1), one can see that it does not just define a single probability distribution, but many of them: there is one probability distribution for each value of the set of parameters $bold(g)$. More precisely, the distribution in Eq. (1) changes continuously as one continuously varies the parameters in $bold(g)$. We say that Eq. (1) defines a _parametric family of probability distributions_. The inference procedure consists in finding the value of the parameters $bold(g)$ that maximises the probability that the model $p_bold(g) (bold(s))$ produces the data.
+
+To do so, we introduce the _log-likelihood function_:
+$
+cal(L)(bold(g)) = log P_bold(g) (microstate(s))
+$ <eq:2-5-log-likelihood>
+where $P_bold(g) (microstate(s))$ is the probability that the model $p_bold(g) (bold(s))$ produces the dataset $hat(bold(s)) = (bold(s)^((1)), ..., bold(s)^((N)))$. Note that $cal(L)(bold(g))$ is a function of the parameters $bold(g)$. The inference procedure therefore consists in finding the value $bold(g)^star$ of the parameters that maximises $cal(L)(bold(g))$. For the moment we will assume that there exists only a unique such value of $bold(g)$.
+
++ We assume that, in the dataset $hat(bold(s))$, all datapoints are independently samples from an underlying distribution $p_bold(g) (bold(s))$. Can you show that the log-likelihood function can be re-written as:
+  $ cal(L) = N sum_(bold(s)) p_D (bold(s)) log p_bold(g) (bold(s))$
+  where $p_D (bold(s))$ is the empirical distribution over the states? The empirical distribution is given by $p_D (bold(s)) = K(bold(s))/N$ where $K(bold(s))$ is the number of times that the datapoint $bold(s)$ occurs in the dataset.
+  #solution[
+  From the independent sampling assumption, we have that $P_bold(g) (hat(bold(s))) = inline(product_(k=1)^N) p_bold(g) (hat(bold(s))^((k)))$. Substituting this in @eq:2-5-log-likelihood, we have:
+  $
+  cal(L)(bold(g)) &= log(product_(k=1)^N p_bold(g) (hat(bold(s))^((k)))) \
+  &= sum_(k=1)^N log p_bold(g) (hat(bold(s))^((k))) \
+  &= sum_(bold(s)) K(bold(s)) log p_bold(g) (bold(s)) \
+  &= sum_(bold(s)) N dot K(bold(s))/N log p_bold(g) (bold(s))\
+  &= N sum_(bold(s)) p_D (bold(s)) log p_bold(g) (bold(s))
+  $
+  ]
+
+  *Ising model.* We now take the model distribution $p_bold(g) (bold(s))$ to be given by the Ising model in Eq. (1).
++ Taking the first derivative of $cal(L)(bold(g))$ with respect to a parameter $h_i$, can you show that at the maximum of $cal(L)(bold(g))$ we have that $angle.l s_i angle.r = angle.l s_i angle.r_D$? Similarly, taking the first derivative of $cal(L)(bold(g))$ with respect to a parameter $J_(i j)$, can you show that at the maximum of $cal(L)(bold(g))$ we have that $angle.l s_i s_j angle.r = angle.l s_i s_j angle.r_D$?
+  #solution[
+  Let $p_bold(g) (bold(s))$ be as defined in Eq. (1), and let $i$ correspond to the spin $s_i$. Then $cal(L)(bold(g))$ is:
+  $
+  cal(L)(bold(g)) &= N sum_(bold(s)) p_D (bold(s)) log lr([1/(Z(bold(g))) exp(sum_(j=1)^n h_j s_j + sum_("pair"(j,k)) J_(j k) s_j s_k)]) \
+  &= N sum_(bold(s)) p_D (bold(s)) lr([sum_(j=1)^n h_j s_j + sum_("pair"(j,k)) J_(j k) s_j s_k - log Z(bold(g))])
+  $
+
+  The partial derivative of $cal(L)(bold(g))$ with respect to $h_i$ is then:
+  $
+  (diff cal(L))/(diff h_i) &= N sum_(bold(s)) p_D (bold(s)) lr([diff/(diff h_i) sum_(j=1)^n h_j s_j + diff/(diff h_i) sum_("pair"(j,k)) J_(j k) s_j s_k - diff/(diff h_i) log Z(bold(g))]) \
+  &= N sum_(bold(s)) p_D (bold(s)) dot (s_i - diff/(diff h_i) log Z(bold(g)))
+  $ <eq:2-5-deriv-log-likelihood-unsimplified>
+
+  Where the partial derivative of the log partition function with respect to $h_i$ is:
+  $
+  (diff log Z(bold(g)))/(diff h_i) &= 1/(Z(bold(g))) dot diff/(diff h_i) sum_(bold(s)') exp(sum_(j = 1)^n h_j s_j + sum_("pair"(j,k)) J_(j k) s_j s_k) \
+  &= 1/(Z(bold(g))) dot sum_(bold(s)') diff/(diff h_i) exp(sum_(j = 1)^n h_j s_j + sum_("pair"(j,k)) J_(j k) s_j s_k) \
+  &= 1/(Z(bold(g))) dot sum_(bold(s)') exp(sum_(j = 1)^n h_j s_j + sum_("pair"(j,k)) J_(j k) s_j s_k) dot s_i \
+  &= sum_(bold(s)') p_bold(g) (bold(s')) s_i \
+  &= angle.l s_i angle.r 
+  $ <eq:2-5-deriv-log-partition>
+
+  $cal(L)(bold(g))$ attains its maximum value with respect to $h_i$ when $(diff cal(L))/(diff h_i) = 0$. Substituting @eq:2-5-deriv-log-partition into @eq:2-5-deriv-log-likelihood-unsimplified and solving for the maximum, we find:
+  $
+  0 &= N sum_(bold(s)) p_D (bold(s)) dot (s_i - angle.l s_i angle.r) \
+  ==> wide N sum_(bold(s)) p_D (bold(s)) angle.l s_i angle.r &= N sum_(bold(s)) p_D (bold(s)) s_i \
+  angle.l s_i angle.r dot sum_(bold(s)) p_D (bold(s)) &= angle.l s_i angle.r_D \
+  angle.l s_i angle.r &= angle.l s_i angle.r_D
+  $
+  Where the left-hand side summation cancels in the final step since the occurrence proportions of states in $D$ must sum to 1.
+
+  We proceed analogously to show that $angle.l s_i s_j angle.r = angle.l s_i s_j angle.r_D$ when $cal(L)(bold(g))$ is maximised with respect to $J_(i j)$:
+
+  $
+  (diff cal(L))/(diff J_(i j)) &= N sum_(bold(s)) p_D (bold(s)) lr([diff/(diff J_(i j)) sum_(k=1)^n h_k s_k + diff/(diff J_(i j)) sum_("pair"(k,ell)) J_(k ell) s_k s_ell - diff/(diff J_(i j)) log Z(bold(g))]) \
+  &= N sum_(bold(s)) p_D (bold(s)) dot (s_i - diff/(diff h_i) log Z(bold(g))) \
+  &= N sum_(bold(s)) p_D (bold(s)) dot (s_i - sum_(bold(s)') p_bold(g) (bold(s)') s_i s_j) \
+  &= N sum_(bold(s)) p_D (bold(s)) dot (s_i - angle.l s_i s_j angle.r) \
+  $ <eq:2-5-deriv-local-correlation>
+
+  As before, evaluating @eq:2-5-deriv-local-correlation at $(diff cal(L))/(diff J_(i j)) = 0$ gives:
+  $
+  N sum_(bold(s)) p_D (bold(s)) angle.l s_i s_j angle.r &= N sum_(bold(s)) p_D (bold(s)) s_i s_j \
+  angle.l s_i s_j angle.r &= angle.l s_i s_j angle.r_D
+  $
+  ]
 
 = Application to the analysis of the US supreme Court
 
