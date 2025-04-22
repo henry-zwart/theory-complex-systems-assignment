@@ -464,9 +464,12 @@ where $P_bold(g) (microstate(s))$ is the probability that the model $p_bold(g) (
   ]
 
 = Application to the analysis of the US supreme Court
+A system with $n$ spin variables can be in $2^n$ different states. However, most of the time, the number of different states observed in a dataset is very small compared to $2^n$.
 
-+
-  #solution[]
++ For the US Supreme court dataset: What is the number $n$ of spin variables, and the total number $2^n$ of states that can be observed for that system? What is the total number $N$ of datapoints in the dataset? What is the number $N_"max"$ of different states that are observed?
+  #solution[
+  
+  ]
 +
   #solution[]
 +
