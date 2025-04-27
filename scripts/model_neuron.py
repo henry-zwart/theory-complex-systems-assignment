@@ -170,7 +170,11 @@ def main():
     # Plot inter-spike durations
     fig, ax = plt.subplots(figsize=(4, 2), layout="constrained")
     plot_distribution_between_spikes(interspike_times, ax=ax)
-    fig.savefig(Path("results/figures/neuron_interspiking_distribution.svg"))
+    fig.savefig(
+        Path("results/figures/neuron_interspiking_distribution.svg"),
+        bbox_inches="tight",
+        transparent=True,
+    )
 
     # Calculate refractory period
     tau_0 = determine_refractory(interspike_times)
@@ -185,7 +189,11 @@ def main():
         theoretical_int=-np.log(p_tau_0),
         ax=ax,
     )
-    fig.savefig(Path("results/figures/neuron_exponential_fit.svg"))
+    fig.savefig(
+        Path("results/figures/neuron_exponential_fit.svg"),
+        bbox_inches="tight",
+        transparent=True,
+    )
 
     # Generate new datapoints
     rng = np.random.default_rng(seed=RANDOM_SEED)
@@ -198,7 +206,11 @@ def main():
         interspike_samples, alpha=0.3, label="Samples", show_tau_0=False, ax=ax
     )
 
-    fig.savefig("results/figures/neuron_compare_empirical_theoretical.svg")
+    fig.savefig(
+        "results/figures/neuron_compare_empirical_theoretical.svg",
+        bbox_inches="tight",
+        transparent=True,
+    )
 
     results["n"] = len(interspike_times) - 1
     results["tau0"] = tau_0
