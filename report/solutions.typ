@@ -563,9 +563,12 @@ A system with $n$ spin variables can be in $2^n$ different states. However, most
 === *(Bonus question)* Numerical solution: For the dataset provided, find numerically the value of the parameters $bold(g)$ of the fully-connected pairwise model @eq:pairwise-ising-model that maximises the log-likelihood function $log cal(L)(bold(g))$. What are the main computational limitations of your algorithm? How can you improve it?
 
 #solution[
-  We solve for the parameters $bold(g)$ by minimising the negative log-likelihood function @eq:log-likelihood-computable using the SciPy BFGS solver. Note that this is equivalent to _maximising_ the log-likelihood function. The negative log-likelihood across optimisation iterations is shown in @fig:model-fitting-neg-log-likelihood.
+  We solve for the parameters $bold(g)$ by minimising the negative log-likelihood function (@eq:log-likelihood-computable) using the SciPy BFGS solver (line 597 of `combined.py` or line 386 of `supreme_court.py`). Note that this is equivalent to _maximising_ the log-likelihood function. The negative log-likelihood across optimisation iterations is shown in @fig:model-fitting-neg-log-likelihood.
 
-  #figure(image("../results/figures/neg_log_likelihood_model_fitting.svg")) <fig:model-fitting-neg-log-likelihood>
+  #figure(
+    image("../results/figures/neg_log_likelihood_model_fitting.svg"),
+    caption: [Negative log-likelihood during fitting of pairwise Ising model to the Supreme Court data, using the SciPy BFGS solver subroutine. The grey dashed line indicates the negative log-likelihood of the parameters $bold(g)^star$ provided on Canvas.]
+  ) <fig:model-fitting-neg-log-likelihood>
 
   While we obtain similar fit parameters to those provided on Canvas, the optimisation process is computationally expensive -- even for only nine judges -- in particular because the partition function must be re-evaluated at each step. Computing $Z(g)$ requires a summation over $2^n$ distinct microstates, with $O(n^2)$ operations for each term.
 
