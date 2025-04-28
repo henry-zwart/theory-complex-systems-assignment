@@ -1,0 +1,3 @@
+[submodule "uva-game-theory"]
+	path = uva-game-theory
+	url = https://github.com/henry-zwart/uva-game-theory

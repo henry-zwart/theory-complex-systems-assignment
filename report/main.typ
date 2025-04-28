@@ -1,4 +1,4 @@
-#import "@local/uva-game-theory:0.1.0": assignment
+#import "../uva-game-theory/src/lib.typ": assignment 
 
 #set text(lang: "EN", region: "GB")
 
