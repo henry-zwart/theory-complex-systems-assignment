@@ -355,7 +355,6 @@ def probability_k_conservative_model(
     k: int,
     h: npt.NDArray[np.float64],
     j: npt.NDArray[np.float64],
-    partition: float | None = None,
 ) -> float:
     return thermal_average(lambda s: (s.sum() == 2 * k - h.size).astype(int), h, j)
 
@@ -365,10 +364,19 @@ def negative_log_likelihood(
     h: npt.NDArray[np.float64],
     j: npt.NDArray[np.float64],
     partition: float,
+    data_distribution: npt.NDArray[np.float64] | None = None,
 ) -> float:
+    # Compute p_d if not provided
+    if data_distribution is None:
+        data_distribution = np.array(
+            [
+                empirical_probability(s, votes)
+                for s in enumerate_microstates(votes.shape[1])
+            ]
+        )
     log_likelihood = 0
-    for s in enumerate_microstates(votes.shape[1]):
-        p_d = empirical_probability(s, votes)
+    for i, s in enumerate(enumerate_microstates(votes.shape[1])):
+        p_d = data_distribution[i]
         p_g = boltzmann_probability(s, h, j, partition)
         log_likelihood += p_d * np.log(p_g)
     nll = -votes.shape[0] * log_likelihood
@@ -382,18 +390,16 @@ def fit_model(
 ]:
     nll_values = []
 
+    # Pre-compute distribution of microstates in dataset
+    p_d = np.array(
+        [empirical_probability(s, votes) for s in enumerate_microstates(votes.shape[1])]
+    )
+
     def objective_fn(g) -> float:
         h, j = unpack_param_vec(g)
         partition = calculate_partition(h, j)
-        nll = negative_log_likelihood(votes, h, j, partition)
-        # running_sum = 0
-        # for s in enumerate_microstates(h.size):
-        #    p_d = empirical_probability(s, votes)
-        #    p_g = boltzmann_probability(s, h, j, partition)
-        #    running_sum += p_d * np.log(p_g)
-        # nll = -votes.shape[0] * running_sum
+        nll = negative_log_likelihood(votes, h, j, partition, p_d)
         nll_values.append(nll)
-        print(partition)
         return nll
 
     h_init = empirical_avg_local_magnetisation(votes)
@@ -634,7 +640,7 @@ def main():
         transparent=True,
     )
 
-    (h, j), nll = fit_model(votes)
+    _, nll = fit_model(votes)
     nll_fit_params = negative_log_likelihood(votes, data.fit_h, data.fit_j, partition)
     fig, ax = plt.subplots(figsize=(4, 2), constrained_layout=True)
     ax.plot(np.arange(len(nll)), nll, label=r"$-\mathcal{L}^{(i)}(\boldsymbol{g})$")
