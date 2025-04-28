@@ -790,15 +790,18 @@ def supreme_court_experiments():
         k_conservative_votes_prob_independent[k] = (
             probability_k_conservative_independent(k, conservative_vote_prob)
         )
-    fig, ax = plt.subplots(figsize=(4, 2), constrained_layout=True)
+    fig, ax = plt.subplots(figsize=(4.5, 2), constrained_layout=True)
     ax.plot(ks, k_conservative_votes_prob_independent, label=r"$P_I (k)$")
     ax.scatter(ks, k_conservative_votes_prob_independent, marker="x")
     ax.set_xticks(ks)
     ax.set_xlabel(r"Number of conservative votes ($k$)")
     ax.set_ylabel(r"$P(k)$")
+    ax.set_title(r"$P(k\text{ conservative})$: Independent judges model")
     ax.spines["top"].set_visible(False)
     ax.spines["right"].set_visible(False)
-    ax.legend()
+    ax.legend(
+        loc="center left", bbox_to_anchor=(1.01, 0.5), labelspacing=1, frameon=False
+    )
     fig.savefig(
         "results/figures/conservative_vote_count_distribution.svg",
         bbox_inches="tight",
@@ -809,7 +812,7 @@ def supreme_court_experiments():
     for k in ks:
         k_conservative_votes_prob_data[k] = probability_k_conservative_data(k, votes)
 
-    fig, ax = plt.subplots(figsize=(4, 2), constrained_layout=True)
+    fig, ax = plt.subplots(figsize=(4.5, 2), constrained_layout=True)
     ax.plot(ks, k_conservative_votes_prob_independent, label=r"$P_I (k)$")
     ax.scatter(ks, k_conservative_votes_prob_independent, marker="x")
     ax.plot(ks, k_conservative_votes_prob_data, label=r"$P_D (k)$")
@@ -817,9 +820,12 @@ def supreme_court_experiments():
     ax.set_xticks(ks)
     ax.set_xlabel(r"Number of conservative votes ($k$)")
     ax.set_ylabel(r"$P(k)$")
+    ax.set_title(r"$P(k\text{ conservative})$: Empirical vs. independent")
     ax.spines["top"].set_visible(False)
     ax.spines["right"].set_visible(False)
-    ax.legend()
+    ax.legend(
+        loc="center left", bbox_to_anchor=(1.01, 0.5), labelspacing=1, frameon=False
+    )
     fig.savefig(
         "results/figures/conservative_vote_count_distribution_2.svg",
         bbox_inches="tight",
@@ -832,7 +838,7 @@ def supreme_court_experiments():
             k, data.fit_h, data.fit_j
         )
 
-    fig, ax = plt.subplots(figsize=(4, 2), constrained_layout=True)
+    fig, ax = plt.subplots(figsize=(4.5, 2), constrained_layout=True)
     ax.plot(ks, k_conservative_votes_prob_independent, label=r"$P_I (k)$")
     ax.scatter(ks, k_conservative_votes_prob_independent, marker="x")
     ax.plot(ks, k_conservative_votes_prob_data, label=r"$P_D (k)$")
@@ -842,9 +848,14 @@ def supreme_court_experiments():
     ax.set_xticks(ks)
     ax.set_xlabel(r"Number of conservative votes ($k$)")
     ax.set_ylabel(r"$P(k)$")
+    ax.set_title(
+        r"$P(k\text{ conservative})$: Ising vs. empirical vs. independent", pad=10
+    )
     ax.spines["top"].set_visible(False)
     ax.spines["right"].set_visible(False)
-    ax.legend()
+    ax.legend(
+        loc="center left", bbox_to_anchor=(1.01, 0.5), labelspacing=1, frameon=False
+    )
     fig.savefig(
         "results/figures/conservative_vote_count_distribution_3.svg",
         bbox_inches="tight",
